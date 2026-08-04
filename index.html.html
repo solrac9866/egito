@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Egito Antigo — linha do tempo interativa</title>
+<meta name="description" content="Linha do tempo animada e responsiva do Egito Antigo: do Predinástico a Cleópatra, com faraós, obras, descobertas e curiosidades.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bevan&family=Karla:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* pigmentos reais do Egito antigo */
+  --basalto:#0E141B;
+  --nilo:#0B2531;
+  --azul-egipcio:#2A5CAA;   /* primeiro pigmento sintético da humanidade */
+  --faianca:#48B8A0;
+  --ouro:#D9A441;
+  --ocre:#C2703F;
+  --vermelho:#B0483A;
+  --malaquita:#3E8E5A;
+  --ametista:#8A6BB1;
+  --pedra:#6E7C88;
+  --calcario:#EDE6D6;
+  --papiro:#A2998A;
+
+  --disp:"Bevan",Georgia,serif;
+  --body:"Karla","Segoe UI",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+
+  --max:1180px;
+  --r:4px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--basalto);
+  background-image:
+    radial-gradient(1100px 620px at 50% -8%, rgba(217,164,65,.16), transparent 62%),
+    radial-gradient(900px 900px at 12% 42%, rgba(42,92,170,.14), transparent 60%),
+    radial-gradient(900px 900px at 92% 78%, rgba(72,184,160,.10), transparent 60%),
+    linear-gradient(180deg,#0E141B 0%, #0C1F2A 55%, #0A161E 100%);
+  background-attachment:fixed;
+  color:var(--calcario);
+  font-family:var(--body);
+  font-weight:400;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+::selection{background:var(--ouro);color:#0E141B}
+:focus-visible{outline:2px solid var(--ouro);outline-offset:3px;border-radius:2px}
+
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+
+/* ---------- ABERTURA ---------- */
+.hero{position:relative;min-height:92svh;display:flex;flex-direction:column;justify-content:center;padding:64px 0 40px;overflow:hidden}
+.sol{position:absolute;top:6vh;left:50%;transform:translateX(-50%);width:min(62vw,460px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, rgba(217,164,65,.30), rgba(217,164,65,.09) 45%, transparent 68%);
+  filter:blur(2px);pointer-events:none}
+.sol::after{content:"";position:absolute;inset:22%;border-radius:50%;border:1px solid rgba(217,164,65,.35)}
+.hero-in{position:relative;z-index:2;text-align:center}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ouro);margin:0 0 18px}
+.hero h1{
+  font-family:var(--disp);font-weight:400;margin:0;
+  font-size:clamp(2.9rem,13vw,7.2rem);line-height:.92;letter-spacing:.02em;
+  text-transform:uppercase;color:var(--calcario);
+  text-shadow:0 2px 0 rgba(0,0,0,.35);
+}
+.hero h1 em{display:block;font-style:normal;color:var(--ouro);font-size:.44em;letter-spacing:.16em;margin-top:.35em}
+.lede{max-width:56ch;margin:26px auto 0;color:#CFC7B6;font-size:clamp(1rem,2.4vw,1.15rem)}
+.stats{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 34px;margin:34px auto 0;padding:0;list-style:none}
+.stats li{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;color:var(--papiro);text-transform:uppercase}
+.stats b{display:block;font-family:var(--disp);font-weight:400;font-size:1.5rem;letter-spacing:.02em;color:var(--faianca);line-height:1.2}
+.cue{margin-top:46px;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;color:var(--papiro);text-transform:uppercase}
+.cue span{display:block;width:1px;height:52px;margin:12px auto 0;background:linear-gradient(180deg,var(--ouro),transparent)}
+
+/* ---------- BARRA DE NAVEGAÇÃO ---------- */
+.bar{position:sticky;top:0;z-index:40;background:rgba(10,18,24,.86);backdrop-filter:blur(10px);border-block:1px solid rgba(237,230,214,.10)}
+.bar-in{display:flex;align-items:center;gap:14px;padding:10px clamp(16px,4vw,32px);max-width:var(--max);margin:0 auto}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;padding:2px 0}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;background:transparent;border:1px solid rgba(237,230,214,.18);color:#CFC7B6;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:7px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.2s}
+.chip:hover{border-color:var(--c,var(--ouro));color:#fff}
+.chip[aria-current="true"]{background:var(--c,var(--ouro));border-color:var(--c,var(--ouro));color:#0E141B;font-weight:700}
+.busca{position:relative;flex:0 0 auto}
+.busca input{background:rgba(237,230,214,.06);border:1px solid rgba(237,230,214,.18);border-radius:999px;
+  color:var(--calcario);font-family:var(--body);font-size:.85rem;padding:8px 14px;width:min(38vw,220px)}
+.busca input::placeholder{color:#7E8894}
+
+/* ---------- LINHA DO TEMPO ---------- */
+.timeline{position:relative;padding:70px 0 40px}
+.axis{position:absolute;top:0;bottom:0;left:15px;width:2px;background:rgba(237,230,214,.12)}
+.axis i{display:block;width:100%;height:var(--fill,0%);background:linear-gradient(180deg,var(--ouro),var(--azul-egipcio) 40%,var(--faianca));box-shadow:0 0 16px rgba(72,184,160,.35)}
+
+.era{margin-bottom:76px;scroll-margin-top:78px}
+.era-head{position:relative;padding-left:52px;margin-bottom:34px}
+.era-num{font-family:var(--disp);font-size:.9rem;letter-spacing:.14em;color:var(--c);display:block}
+.era-head h2{font-family:var(--disp);font-weight:400;font-size:clamp(1.5rem,4.4vw,2.4rem);line-height:1.12;margin:.15em 0 .1em;color:var(--calcario)}
+.era-range{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;color:var(--c)}
+.era-blurb{max-width:60ch;color:#BDB5A6;margin:.7em 0 0;font-size:.98rem}
+.era-head::before{content:"";position:absolute;left:8px;top:6px;width:16px;height:16px;background:var(--c);transform:rotate(45deg);box-shadow:0 0 0 5px rgba(14,20,27,1),0 0 22px var(--c)}
+
+.event{position:relative;padding-left:52px;margin-bottom:22px}
+.dot{position:absolute;left:9px;top:16px;width:14px;height:14px;border-radius:50%;background:var(--basalto);border:2px solid var(--c);z-index:2}
+.event.rei .dot{border-color:var(--ouro);background:var(--ouro);box-shadow:0 0 14px rgba(217,164,65,.65)}
+.card{position:relative;background:linear-gradient(180deg,rgba(237,230,214,.055),rgba(237,230,214,.02));
+  border:1px solid rgba(237,230,214,.12);border-left:3px solid var(--c);border-radius:var(--r);
+  padding:18px 20px 20px;transition:border-color .25s,transform .25s,background .25s}
+.event:hover .card{border-color:rgba(237,230,214,.28);border-left-color:var(--c);background:linear-gradient(180deg,rgba(237,230,214,.085),rgba(237,230,214,.03))}
+.date{font-family:var(--mono);font-size:.74rem;letter-spacing:.09em;color:var(--c);margin:0 0 6px;text-transform:uppercase}
+.card h3{font-family:var(--body);font-weight:800;font-size:1.08rem;line-height:1.32;margin:0 0 8px;color:var(--calcario)}
+.card p.txt{margin:0;color:#C3BBAC;font-size:.97rem}
+.card p.txt + p.txt{margin-top:.7em}
+
+/* assinatura: o cartucho real */
+.cartucho{display:inline-flex;align-items:center;position:relative;margin:0 0 10px;
+  border:1.5px solid var(--ouro);border-radius:999px;padding:.22em 1em;
+  font-family:var(--disp);font-size:.82rem;letter-spacing:.09em;color:var(--ouro);text-transform:uppercase}
+.cartucho::after{content:"";position:absolute;right:-7px;top:50%;transform:translateY(-50%);width:1.5px;height:64%;background:var(--ouro)}
+
+.fato{margin:14px 0 0;padding:11px 13px;border-radius:var(--r);background:rgba(42,92,170,.13);
+  border:1px dashed rgba(72,184,160,.38);color:#CFE6E0;font-size:.92rem}
+.fato b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--faianca);margin-bottom:4px}
+
+/* ---------- TEMAS ---------- */
+.temas{padding:20px 0 90px}
+.sec-head{margin:0 0 28px;padding-left:52px}
+.sec-head h2{font-family:var(--disp);font-weight:400;font-size:clamp(1.5rem,4.4vw,2.3rem);margin:.1em 0;color:var(--ouro)}
+.sec-head p{color:#BDB5A6;max-width:58ch;margin:.3em 0 0}
+.grid{display:grid;gap:14px;padding-left:52px}
+details.tema{background:linear-gradient(180deg,rgba(237,230,214,.055),rgba(237,230,214,.02));
+  border:1px solid rgba(237,230,214,.12);border-radius:var(--r);overflow:hidden}
+details.tema summary{cursor:pointer;list-style:none;padding:16px 20px;display:flex;align-items:center;gap:12px;
+  font-family:var(--body);font-weight:800;font-size:1.02rem;color:var(--calcario)}
+details.tema summary::-webkit-details-marker{display:none}
+details.tema summary::after{content:"+";margin-left:auto;font-family:var(--mono);color:var(--faianca);font-size:1.2rem;line-height:1}
+details.tema[open] summary::after{content:"–"}
+details.tema summary span.mk{width:10px;height:10px;background:var(--faianca);transform:rotate(45deg);flex:0 0 auto}
+.tema-body{padding:0 20px 20px;color:#C3BBAC;font-size:.96rem}
+.tema-body h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ouro);margin:18px 0 6px}
+.tema-body ul{margin:.4em 0;padding-left:1.1em}
+.tema-body li{margin-bottom:.45em}
+.tema-body li b{color:var(--calcario)}
+
+.vazio{padding-left:52px;color:var(--papiro);font-family:var(--mono);font-size:.85rem;display:none}
+.vazio.on{display:block}
+
+footer{border-top:1px solid rgba(237,230,214,.12);padding:34px 0 60px;color:var(--papiro);font-size:.85rem}
+footer p{margin:.3em 0}
+.up{display:inline-block;margin-top:14px;color:var(--faianca);text-decoration:none;font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}
+
+
+/* ---------- FOTOS ---------- */
+.foto{margin:0 0 14px;border:1px solid rgba(237,230,214,.12);border-radius:3px;overflow:hidden;background:rgba(0,0,0,.3)}
+.foto img{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;background:#0A1218}
+.foto figcaption{font-family:var(--mono);font-size:.61rem;letter-spacing:.04em;color:#8B8474;padding:8px 11px 9px;line-height:1.5}
+.foto figcaption b{display:block;font-family:var(--body);font-weight:600;font-size:.79rem;letter-spacing:0;color:#BDB5A6;margin-bottom:3px;line-height:1.35}
+.foto figcaption a{color:var(--faianca);text-decoration:none;border-bottom:1px solid rgba(72,184,160,.4)}
+.foto figcaption a:hover{color:var(--ouro);border-color:var(--ouro)}
+.tema-body .foto{margin-bottom:16px}
+
+/* ---------- ANIMAÇÃO ---------- */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+.hero .rv{transition-delay:var(--d,0s)}
+
+/* ---------- DESKTOP ---------- */
+@media (min-width:900px){
+  .axis{left:50%;transform:translateX(-50%)}
+  .era-head{padding-left:0;text-align:center;max-width:640px;margin-inline:auto}
+  .era-head::before{left:50%;top:-34px;transform:translateX(-50%) rotate(45deg)}
+  .era-blurb{margin-inline:auto}
+  .event{width:calc(50% - 44px);padding-left:0;margin-bottom:26px}
+  .event:nth-child(odd){margin-left:0;text-align:right}
+  .event:nth-child(odd) .card{border-left:1px solid rgba(237,230,214,.12);border-right:3px solid var(--c)}
+  .event:nth-child(odd) .dot{left:auto;right:-51px}
+  .event:nth-child(odd) .cartucho{justify-content:flex-end}
+  .event:nth-child(even){margin-left:calc(50% + 44px)}
+  .event:nth-child(even) .dot{left:-51px}
+  .event:nth-child(odd) .rv{transform:translateX(-28px)}
+  .event:nth-child(even) .rv{transform:translateX(28px)}
+  .event .rv.in{transform:none}
+  .sec-head{text-align:center;padding-left:0}
+  .sec-head p{margin-inline:auto}
+  .grid{grid-template-columns:1fr 1fr;padding-left:0}
+  .vazio{padding-left:0;text-align:center}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1!important;transform:none!important;transition:none!important}
+  .card,.chip{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="sol" aria-hidden="true"></div>
+  <div class="wrap hero-in">
+    <p class="eyebrow rv" style="--d:.05s">Linha do tempo interativa</p>
+    <h1 class="rv" style="--d:.15s">Egito<em>Antigo</em></h1>
+    <p class="lede rv" style="--d:.3s">Trinta séculos de história às margens do Nilo — de aldeias de agricultores à morte de Cleópatra. Percorra os períodos, os faraós, as obras e as descobertas que ainda hoje nos surpreendem.</p>
+    <ul class="stats rv" style="--d:.45s">
+      <li><b>3.000</b>anos de história</li>
+      <li><b>33</b>dinastias</li>
+      <li><b>11</b>períodos</li>
+      <li><b>70+</b>marcos</li>
+    </ul>
+    <p class="cue rv" style="--d:.6s">Role para navegar<span aria-hidden="true"></span></p>
+  </div>
+</header>
+
+<nav class="bar" aria-label="Períodos">
+  <div class="bar-in">
+    <div class="chips" id="chips" role="tablist"></div>
+    <div class="busca">
+      <label class="sr" for="q" style="position:absolute;left:-9999px">Buscar na linha do tempo</label>
+      <input id="q" type="search" placeholder="Buscar faraó, obra…" autocomplete="off">
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div class="timeline" id="timeline">
+    <div class="axis" aria-hidden="true"><i id="fill"></i></div>
+    <div id="linha"></div>
+    <p class="vazio" id="vazio">Nenhum marco encontrado. Tente outra palavra.</p>
+  </div>
+
+  <section class="temas" id="temas">
+    <div class="sec-head rv">
+      <h2>Por dentro da civilização</h2>
+      <p>O que a linha do tempo não cabe: religião, escrita, mumificação, ciência, cotidiano e os mitos que ainda circulam por aí.</p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Datas anteriores a 664 a.C. são aproximadas — a cronologia egípcia é reconstruída a partir de listas reais, registros astronômicos e datação por carbono‑14, e varia entre autores. Aqui foi usada a cronologia média mais aceita (padrão britânico, Shaw/Baines).</p>
+    <p>Todas as imagens vêm do <b>Wikimedia Commons</b>, em domínio público ou sob licenças Creative Commons, com autoria e licença indicadas em cada legenda — clique no crédito para abrir a página original do arquivo. Ao reutilizar as fotos fora daqui, mantenha a atribuição.</p>
+    <p>Material didático de livre uso em sala de aula.</p>
+    <a class="up" href="#top">↑ Voltar ao início</a>
+  </div>
+</footer>
+
+<script>
+const ERAS = [
+{id:"pre",n:"Predinástico",r:"c. 5000 – 3100 a.C.",c:"#C2703F",
+ b:"Antes dos faraós: aldeias agrícolas espalhadas pelo vale do Nilo aprendem a viver no ritmo da cheia e inventam quase tudo — cerâmica, metalurgia, escrita.",
+ e:[
+ {d:"c. 5000 a.C.",t:"Os primeiros agricultores do vale",x:"Grupos das culturas de Badari e do Faium se fixam nas margens do Nilo. A cheia anual deposita uma camada de limo escuro e fértil: os egípcios chamavam sua terra de <b>Kemet</b>, “a terra negra”, em oposição a <b>Deshret</b>, “a terra vermelha” do deserto.",f:"A palavra “Egito” não é egípcia: vem do grego <i>Aigyptos</i>, deformação de <i>Hut-ka-Ptah</i> (“casa do ka de Ptah”), nome de um templo de Mênfis."},
+ {d:"c. 4000 – 3200 a.C.",t:"Culturas de Nagada",x:"Nagada I, II e III trazem cerâmica pintada, objetos de cobre, comércio com o Levante e a Núbia e as primeiras cidades: Hieracômpolis, Nagada e Abidos. Surgem diferenças fortes entre ricos e pobres nos enterros — o Estado está nascendo."},
+ {d:"c. 3250 a.C.",t:"Os sinais mais antigos",x:"Etiquetas de marfim do túmulo U‑j, em Abidos, trazem sinais que registram quantidades e procedências. É uma das escritas mais antigas do mundo, contemporânea da suméria.",f:"Escrita não nasceu da poesia: nasceu da contabilidade. Os primeiros textos egípcios são etiquetas de estoque."},
+ {d:"c. 3100 a.C.",t:"A Paleta de Narmer",x:"Uma placa de siltito de 64 cm mostra o rei usando, de um lado, a coroa branca do Alto Egito e, do outro, a coroa vermelha do Baixo Egito, esmagando inimigos. É o primeiro documento histórico da unificação — e já traz todas as convenções da arte egípcia que durariam três milênios."}
+ ]},
+
+{id:"arcaico",n:"Dinástico Inicial",r:"c. 3100 – 2686 a.C.",c:"#B0483A",
+ b:"Dinastias I e II. Um único rei passa a governar do delta à primeira catarata, e o Egito inventa a máquina administrativa que sustentará tudo o que vem depois.",
+ e:[
+ {d:"c. 3100 a.C.",t:"A unificação do Alto e do Baixo Egito",k:"Narmer · Menés",x:"Narmer (provavelmente o mesmo rei que a tradição grega chama de Menés) une as duas terras e funda <b>Mênfis</b>, na ponta do delta. O faraó passa a usar a dupla coroa, o <i>pschent</i>, e a se apresentar como o equilíbrio vivo entre os dois reinos.",f:"O título “faraó” só é usado como forma de tratar o rei a partir do Novo Império. Vem de <i>per-aa</i>, “a casa grande”, isto é, o palácio — como quando dizemos “o Planalto decidiu”."},
+ {d:"c. 3000 a.C.",t:"O Estado se organiza",x:"O país é dividido em <b>nomos</b> (províncias), cada um com seu governador. Nasce o corpo de escribas, o censo do gado, o imposto medido pela altura da cheia e o calendário. Sem burocracia, não há pirâmide."},
+ {d:"c. 2900 a.C.",t:"As mastabas de Abidos e Saqqara",x:"Os reis são sepultados em grandes tumbas retangulares de tijolo de barro, as mastabas. Nas primeiras dinastias, servos eram sacrificados para acompanhar o rei — prática abandonada já na II dinastia e substituída por estatuetas."},
+ {d:"c. 2690 a.C.",t:"Khasekhemuy encerra a II dinastia",x:"Depois de um conflito interno entre os cultos de Hórus e de Set, o rei Khasekhemuy (“as duas potências aparecem”) reunifica o país. Sua tumba usa pedra pela primeira vez em escala significativa."}
+ ]},
+
+{id:"antigo",n:"Antigo Império",r:"c. 2686 – 2181 a.C.",c:"#D9A441",
+ b:"A era das pirâmides. Em cerca de um século, o Egito passa de tumbas de tijolo à maior construção em pedra que a humanidade faria nos 3.800 anos seguintes.",
+ e:[
+ {d:"c. 2670 a.C.",t:"A pirâmide de degraus de Saqqara",k:"Djoser",x:"O arquiteto <b>Imhotep</b> empilha seis mastabas de pedra e cria a primeira pirâmide — e o primeiro grande complexo do mundo inteiramente construído em pedra aparelhada, com 60 metros de altura.",f:"Imhotep era plebeu, virou vizir, arquiteto e médico, e 2.000 anos depois foi <b>divinizado</b> como deus da medicina. Os gregos o identificaram com Asclépio."},
+ {d:"c. 2600 a.C.",t:"Seneferu, o rei que construiu três pirâmides",k:"Seneferu",x:"Meidum, a Curvada (que muda de ângulo no meio, provável correção de rota em obra) e a Vermelha — a primeira pirâmide verdadeira, de faces lisas. Seneferu moveu mais pedra que qualquer outro faraó: cerca de 3,5 milhões de m³."},
+ {d:"c. 2560 a.C.",t:"A Grande Pirâmide de Gizé",k:"Quéops · Khufu",x:"146,6 m de altura original, cerca de 2,3 milhões de blocos, base de 230 m com erro de nivelamento menor que 2 cm e faces alinhadas aos pontos cardeais com desvio de fração de grau. Permaneceu a construção mais alta do mundo por quase 3.800 anos, até a catedral de Lincoln, na Inglaterra.",f:"Escravos não construíram as pirâmides. Os <b>papiros de Merer</b> (achados em 2013 no Uádi el‑Jarf) são o diário de bordo de um capataz que transportava calcário de Tura — e as vilas de operários em Gizé tinham padarias, cervejarias, açougues e atendimento médico, com esqueletos que mostram fraturas tratadas."},
+ {d:"c. 2530 a.C.",t:"Quéfren e a Esfinge",k:"Quéfren · Khafre",x:"A segunda pirâmide parece maior porque foi erguida em terreno mais alto — e ainda conserva parte do revestimento de calcário no topo. Ao lado, a Grande Esfinge: 73 m de comprimento e 20 m de altura, esculpida em um único afloramento de rocha.",f:"O nariz da Esfinge <b>não</b> foi destruído por Napoleão: desenhos de 1737 já a mostram sem nariz, e o cronista Al‑Maqrizi relata que um xeique o teria quebrado em 1378 por considerá‑lo idolatria."},
+ {d:"c. 2510 a.C.",t:"Miquerinos fecha o conjunto de Gizé",k:"Miquerinos · Menkaure",x:"A menor das três (65 m), com revestimento de granito vermelho de Assuã na base. Suas tríades esculpidas em grauvaca estão entre as obras‑primas da escultura egípcia."},
+ {d:"c. 2350 a.C.",t:"Os Textos das Pirâmides",x:"Nas paredes da pirâmide de Unas aparecem fórmulas mágicas para garantir a ascensão do rei ao céu: são os <b>textos religiosos mais antigos do mundo</b> que chegaram até nós."},
+ {d:"c. 2280 – 2180 a.C.",t:"Pepi II e o desgaste do poder central",k:"Pepi II",x:"A tradição lhe atribui um reinado de até 94 anos — provavelmente 64. Ao final, os governadores de província já são hereditários, ricos e praticamente independentes. O trono está oco."}
+ ]},
+
+{id:"pi1",n:"1.º Período Intermediário",r:"c. 2181 – 2055 a.C.",c:"#6E7C88",
+ b:"O Estado se parte. Cheias fracas, fome e disputa entre Heracleópolis e Tebas — e, curiosamente, uma explosão de arte regional e de literatura.",
+ e:[
+ {d:"c. 2181 a.C.",t:"Colapso do poder central",x:"Uma série de cheias baixas — associada ao evento climático seco de 4,2 mil anos atrás, sentido do Egito à Mesopotâmia — corta a base agrícola do Estado. Sem excedente, não há corte, nem exército, nem grandes obras."},
+ {d:"c. 2150 a.C.",t:"O mundo de cabeça para baixo",x:"Textos como as <i>Admoestações de Ipuwer</i> e o <i>Diálogo de um homem com seu ba</i> descrevem pobres virando ricos, tumbas saqueadas e desespero pessoal. É a primeira literatura egípcia claramente crítica e introspectiva."},
+ {d:"c. 2100 a.C.",t:"O além se democratiza",x:"As fórmulas antes exclusivas do rei passam para os <b>Textos dos Sarcófagos</b>, usados por nobres e depois por qualquer pessoa que pudesse pagar um caixão pintado. A vida eterna deixa de ser monopólio real."}
+ ]},
+
+{id:"medio",n:"Médio Império",r:"c. 2055 – 1650 a.C.",c:"#3E8E5A",
+ b:"Reunificação sob Tebas e a idade de ouro da língua egípcia: literatura, matemática e medicina que seriam copiadas por mil anos.",
+ e:[
+ {d:"c. 2055 a.C.",t:"Mentuhotep II reunifica o Egito",k:"Mentuhotep II",x:"O príncipe tebano vence Heracleópolis e refunda o reino. Seu templo em terraços em Deir el‑Bahari, na margem oeste de Tebas, inspiraria o de Hatshepsut 600 anos depois."},
+ {d:"c. 1985 a.C.",t:"Amenemhat I e a XII dinastia",k:"Amenemhat I",x:"Vizir que se torna rei, transfere a capital para Itjtauy e cria a corregência (o filho reina junto com o pai) para evitar crises de sucessão. O <i>Ensinamento de Amenemhat</i> descreve um atentado noturno contra ele."},
+ {d:"c. 1875 a.C.",t:"Senusret III quebra os nomarcas",k:"Senusret III",x:"Reorganiza a administração, esvazia o poder dos governadores de província e conduz quatro campanhas na Núbia, erguendo uma linha de fortalezas na segunda catarata. Seus retratos, com olhos pesados e boca amarga, rompem com o rosto sereno e idealizado dos faraós anteriores."},
+ {d:"c. 1875 a.C.",t:"O Conto de Sinuhe",x:"O maior clássico da literatura egípcia: um cortesão foge para a Síria, enriquece no exílio e envelhece com saudade de casa — o texto trata de identidade, pertencimento e do medo de morrer longe da própria terra.",f:"Sinuhe foi copiado por escolas de escribas durante <b>mil anos</b>. É o livro didático mais duradouro da história."},
+ {d:"c. 1830 a.C.",t:"Amenemhat III e o Faium",k:"Amenemhat III",x:"Obras hidráulicas transformam a depressão do Faium em uma região agrícola imensa. Seu complexo funerário em Hawara foi descrito por Heródoto como o <b>Labirinto</b>, que ele considerou mais impressionante que as próprias pirâmides."},
+ {d:"c. 1800 a.C.",t:"O alfabeto nasce nas minas do Sinai",x:"Trabalhadores semitas nas minas de turquesa de Serabit el‑Khadim adaptam hieróglifos para escrever sua própria língua, usando o som da primeira letra do nome de cada objeto. É a escrita <b>protossinaítica</b> — ancestral do alfabeto fenício, grego, latino e do que você está lendo agora."},
+ {d:"c. 1650 a.C.",t:"O Papiro Rhind",x:"Cópia de um original de c. 1850 a.C., com 84 problemas de matemática: frações unitárias, progressões, volume de silos e a área do círculo calculada como (8/9 do diâmetro)², o que equivale a um π ≈ 3,16 — erro de apenas 0,6%."}
+ ]},
+
+{id:"pi2",n:"2.º Período Intermediário",r:"c. 1650 – 1550 a.C.",c:"#6E7C88",
+ b:"Estrangeiros governam o delta pela primeira vez — e deixam de presente a tecnologia militar que faria do Egito um império.",
+ e:[
+ {d:"c. 1650 a.C.",t:"Os hicsos tomam o delta",x:"Chefes de origem cananeia — <i>heka‑khasut</i>, “governantes de terras estrangeiras” — assumem o norte a partir da cidade de Avaris. Não foi só invasão: houve décadas de migração e assentamento antes.",f:"Os hicsos introduziram no Egito o <b>cavalo, o carro de guerra, o arco composto, a espada khopesh, o tear vertical e novas técnicas de bronze</b>. O Egito os expulsou e ficou com as armas."},
+ {d:"c. 1560 a.C.",t:"Seqenenre Tao morre em combate",k:"Seqenenre Tao",x:"A múmia do rei tebano tem cinco ferimentos graves no crânio, compatíveis com machado, lança e punhal hicsos. Tomografias sugerem que ele foi executado com as mãos amarradas, possivelmente após ser capturado."},
+ {d:"c. 1550 a.C.",t:"Ahmose expulsa os hicsos",k:"Ahmose I",x:"O irmão de Kamés toma Avaris, persegue os hicsos até a Palestina e funda a XVIII dinastia. Começa o Novo Império."}
+ ]},
+
+{id:"novo",n:"Novo Império",r:"c. 1550 – 1069 a.C.",c:"#2A5CAA",
+ b:"O Egito vira potência internacional, do Eufrates à quarta catarata. É a era de Hatshepsut, Akhenaton, Tutancâmon e Ramsés II — e das tumbas escavadas no Vale dos Reis.",
+ e:[
+ {d:"c. 1500 a.C.",t:"Nasce o Vale dos Reis",k:"Tutmés I",x:"Tutmés I abandona a pirâmide e manda escavar sua tumba escondida numa ravina deserta, atrás da montanha tebana. A ideia era simples: se ninguém achar, ninguém saqueia. Em 3.000 anos, apenas uma tumba escapou quase intacta."},
+ {d:"1473 – 1458 a.C.",t:"Hatshepsut, a mulher que virou faraó",k:"Hatshepsut",x:"Regente do enteado, assume o trono como rei pleno e reina 21 anos de prosperidade e comércio. Seu templo em Deir el‑Bahari é uma das arquiteturas mais modernas da Antiguidade. A expedição que enviou ao país de <b>Punt</b> voltou com mirra, ébano, marfim, peles e árvores de incenso vivas, transportadas com raiz e tudo.",f:"Nas estátuas, ela aparece com barba postiça e corpo masculino — não por disfarce, mas porque “faraó” era um cargo com iconografia fixa. Décadas depois, seu nome foi <b>raspado</b> dos monumentos por Tutmés III, provavelmente para consolidar a linha sucessória masculina."},
+ {d:"1479 – 1425 a.C.",t:"Tutmés III leva o Egito ao auge",k:"Tutmés III",x:"Dezessete campanhas militares em vinte anos. Em <b>Megido</b> (1457 a.C.) atravessa um desfiladeiro estreito para surpreender a coalizão cananeia — a mais antiga batalha da história com relato tático detalhado, escrito por seu escriba de campo e gravado em Karnak."},
+ {d:"c. 1390 – 1352 a.C.",t:"Amenhotep III, o apogeu",k:"Amenhotep III",x:"Reinado sem guerras, com diplomacia feita por cartas em acadiano trocadas com Babilônia, Mitani e Hatti (as <b>cartas de Amarna</b>). Ergue os Colossos de Mêmnon, duas estátuas de 18 m que sobreviveram ao templo que guardavam.",f:"Depois de um terremoto, um dos colossos passou a <b>emitir um som ao amanhecer</b> — provavelmente ar escapando por fissuras aquecidas. Virou atração turística romana; há grafites de visitantes gregos na perna da estátua."},
+ {d:"1352 – 1336 a.C.",t:"Akhenaton, Nefertiti e a revolução de Aton",k:"Akhenaton",x:"O rei fecha os templos de Amon, elege o disco solar <b>Aton</b> como divindade única acessível apenas por ele, muda de nome e funda do zero a cidade de Aketaton (Amarna). A arte muda junto: corpos alongados, barrigas salientes, e pela primeira vez cenas íntimas da família real brincando com as filhas.",f:"É o experimento monoteísta (ou henoteísta) mais antigo documentado — e durou menos de vinte anos. Após sua morte, a corte voltou a Tebas e apagou seu nome das listas reais."},
+ {d:"1336 – 1327 a.C.",t:"Tutancâmon",k:"Tutancâmon",x:"Sobe ao trono com cerca de 9 anos, restaura o culto de Amon, muda o nome de Tutankhaton para Tutankhamon e morre por volta dos 18. Politicamente, foi um rei menor — e é o mais famoso da história porque sua tumba escapou dos saqueadores.",f:"Exames de DNA e tomografia (2010) indicam que seus pais eram irmãos, que ele tinha pé torto congênito, andava com bengala (foram achadas 130 na tumba) e teve malária. A máscara de ouro pesa <b>10,23 kg</b>."},
+ {d:"1279 – 1213 a.C.",t:"Ramsés II, o Grande",k:"Ramsés II",x:"Sessenta e seis anos de reinado, mais de 90 filhos, e monumentos por todo o país: Abu Simbel, o Ramesseum, a nova capital Pi‑Ramessés, acréscimos em Karnak e Luxor. Reinou tanto que seus doze primeiros herdeiros morreram antes dele.",f:"Em 1974, a múmia de Ramsés II foi enviada a Paris para tratamento contra fungos — e recebeu um <b>passaporte egípcio oficial</b>, com profissão declarada: “Rei (falecido)”. Foi recebida com honras militares no aeroporto."},
+ {d:"1274 a.C.",t:"Kadesh e o primeiro tratado de paz do mundo",x:"Egípcios e hititas se enfrentam na Síria com cinco a seis mil carros de guerra — a maior batalha de carros da Antiguidade. Ramsés quase é capturado, e ambos os lados declaram vitória em casa. Dezesseis anos depois, em <b>1259 a.C.</b>, assinam o tratado egípcio‑hitita.",f:"É o mais antigo tratado internacional preservado nas <b>duas versões</b>, egípcia e hitita, permitindo comparar as duas diplomacias. Uma reprodução está exposta na sede da ONU, em Nova York."},
+ {d:"c. 1250 a.C.",t:"Abu Simbel",x:"Quatro colossos de 20 m escavados na rocha da Núbia. Duas vezes por ano o sol atravessa 60 m de corredor e ilumina o fundo do santuário. Entre 1964 e 1968, o templo inteiro foi <b>cortado em 1.036 blocos e remontado 65 m acima</b>, para escapar do lago da represa de Assuã."},
+ {d:"c. 1208 a.C.",t:"A Estela de Merneptah",k:"Merneptah",x:"Um hino de vitória do filho de Ramsés II traz a mais antiga menção conhecida ao nome <b>“Israel”</b> — grafado com o determinativo de povo, não de cidade ou território."},
+ {d:"1184 – 1153 a.C.",t:"Ramsés III e os Povos do Mar",k:"Ramsés III",x:"Enquanto o Mediterrâneo oriental inteiro entra em colapso (Hatti cai, Ugarit some, Micenas desaba), o Egito repele por terra e mar as coalizões conhecidas como Povos do Mar. Vence, mas sai exaurido.",f:"No ano 29 de seu reinado, os artesãos reais de Deir el‑Medina cruzaram os braços porque as rações de grãos atrasaram: é a <b>primeira greve documentada da história</b>. Ramsés III morreu depois em uma conspiração de harém — a tomografia de 2012 revelou a garganta cortada."},
+ {d:"c. 1150 a.C.",t:"Deir el‑Medina, a vila dos operários",x:"A aldeia dos artesãos que escavavam as tumbas reais deixou milhares de <i>ostraca</i> — cacos usados como bloco de rascunho. Neles há listas de faltas ao trabalho com as justificativas: picado por escorpião, cuidando da mãe doente, “fabricando cerveja”, a esposa deu à luz.",f:"É o retrato mais detalhado do cotidiano de trabalhadores em toda a Antiguidade — inclusive os bilhetes de amor, as dívidas e as brigas de vizinhos."},
+ {d:"c. 1069 a.C.",t:"O império se dissolve",x:"Os sumos sacerdotes de Amon governam Tebas de fato, enquanto os reis se instalam em Tânis. Diante da onda de saques, os sacerdotes recolhem dezenas de múmias reais e as escondem juntas num esconderijo — achado em 1881, com Seti I, Ramsés II e outros lado a lado."}
+ ]},
+
+{id:"pi3",n:"3.º Período Intermediário",r:"c. 1069 – 664 a.C.",c:"#7A8AA0",
+ b:"Egito dividido e governado por líbios, depois por reis núbios que se viam como restauradores da tradição — e enfim invadido pelos assírios.",
+ e:[
+ {d:"c. 945 a.C.",t:"Sheshonq I e os faraós líbios",k:"Sheshonq I",x:"Descendente de mercenários líbios estabelecidos no delta, reunifica parte do país e faz campanha no Levante. É geralmente identificado com o “Shishak” citado na Bíblia."},
+ {d:"747 – 656 a.C.",t:"Os faraós kushitas",k:"Piye · Taharqa",x:"Reis da Núbia (atual Sudão) conquistam o Egito e fundam a XXV dinastia. Devotos de Amon, promovem um renascimento arcaizante: copiam a arte do Antigo Império, restauram templos e voltam a construir pirâmides.",f:"Existem <b>mais pirâmides no Sudão do que no Egito</b> — cerca de 250 contra 118. São menores, mais íngremes e mil anos mais recentes."},
+ {d:"671 – 663 a.C.",t:"A invasão assíria",x:"Assurbanípal saqueia Tebas em 663 a.C., o maior desastre simbólico da história egípcia até então. Os kushitas recuam para Napata."}
+ ]},
+
+{id:"tardio",n:"Período Tardio",r:"664 – 332 a.C.",c:"#48B8A0",
+ b:"Renascimento saíta, dominação persa e os últimos faraós nativos. O Egito vira, ao mesmo tempo, potência decadente e destino turístico dos gregos.",
+ e:[
+ {d:"664 – 610 a.C.",t:"Psamético I e o renascimento saíta",k:"Psamético I",x:"Com apoio de mercenários gregos e cários, expulsa os assírios e reunifica o país a partir de Saís. A arte imita deliberadamente o Antigo Império — é uma política de Estado de volta às origens."},
+ {d:"610 – 595 a.C.",t:"Necau II abre um canal",k:"Necau II",x:"Manda escavar um canal ligando o Nilo ao mar Vermelho e, segundo Heródoto, financia uma expedição fenícia que teria contornado toda a África em três anos, partindo pelo mar Vermelho e voltando pelo Mediterrâneo.",f:"Heródoto duvidou do relato porque os marinheiros diziam ter visto o sol <b>à direita</b> ao navegar para oeste — o que só acontece no hemisfério sul. A dúvida dele é justamente a melhor prova de que a viagem aconteceu."},
+ {d:"525 a.C.",t:"Cambises II e a conquista persa",x:"O exército persa vence em Pelúsio e o Egito vira satrapia — a XXVII dinastia. Segue sendo Egito, mas o rei mora em Susa."},
+ {d:"c. 450 a.C.",t:"Heródoto visita o Egito",x:"O historiador grego percorre o país e dedica o Livro II das <i>Histórias</i> a ele, cunhando a frase que grudou para sempre: o Egito é uma <b>dádiva do Nilo</b>. Registra costumes, animais sagrados e um bom tanto de lenda que ouviu de guias locais."},
+ {d:"380 – 343 a.C.",t:"Nectanebo I e II, os últimos faraós egípcios",k:"Nectanebo II",x:"A XXX dinastia é a última linhagem nativa. Com a volta dos persas, Nectanebo II foge para o sul e desaparece da história. Nunca mais um egípcio nascido no Egito governaria o Egito antigo."}
+ ]},
+
+{id:"ptolomaico",n:"Período Ptolomaico",r:"332 – 30 a.C.",c:"#8A6BB1",
+ b:"Uma dinastia macedônica governa o Egito falando grego, constrói a maior biblioteca do mundo e termina com Cleópatra.",
+ e:[
+ {d:"332 a.C.",t:"Alexandre, o Grande, chega ao Egito",x:"É recebido como libertador dos persas, consagrado no oráculo de Amon no oásis de Siuá e funda <b>Alexandria</b> na costa mediterrânea — que em um século seria a maior cidade do mundo grego."},
+ {d:"305 a.C.",t:"Ptolomeu I funda a dinastia",k:"Ptolomeu I",x:"General de Alexandre, fica com o Egito na partilha do império e se declara rei. Cria o culto de <b>Serápis</b>, deus sincrético desenhado para agradar gregos e egípcios ao mesmo tempo."},
+ {d:"c. 280 a.C.",t:"A Biblioteca, o Museu e o Farol",x:"Alexandria vira o polo científico do mundo antigo. Ali <b>Eratóstenes</b> mede a circunferência da Terra com sombras e um erro de cerca de 2%; Euclides organiza a geometria; Herófilo dissecava corpos humanos. O Farol, com mais de 100 m, era uma das sete maravilhas."},
+ {d:"196 a.C.",t:"A Pedra de Roseta",x:"Um decreto sacerdotal em honra a Ptolomeu V é gravado três vezes na mesma laje: em <b>hieróglifos</b>, em <b>demótico</b> e em <b>grego</b>. Ninguém sabia, mas ali estava a chave para reabrir três mil anos de escrita."},
+ {d:"51 – 30 a.C.",t:"Cleópatra VII, a última faraó",k:"Cleópatra VII",x:"Culta, poliglota e hábil negociadora, aliou‑se a Júlio César e depois a Marco Antônio para manter o Egito independente diante de Roma. Derrotada em Áccio (31 a.C.), morre em 30 a.C. e o Egito vira província romana.",f:"Cleópatra era de <b>ascendência macedônica</b>, não egípcia, e foi a primeira de sua dinastia a aprender a língua do país depois de 250 anos. E um dado de escala: ela viveu mais perto do lançamento do primeiro iPhone do que da construção da Grande Pirâmide."}
+ ]},
+
+{id:"legado",n:"Depois dos faraós",r:"30 a.C. – hoje",c:"#C9C2B0",
+ b:"O Egito não acaba em 30 a.C.: a língua sobrevive no copta, o culto de Ísis chega à Britânia, e no século XIX o país é redescoberto — e espoliado.",
+ e:[
+ {d:"30 a.C. – 395 d.C.",t:"Egito romano",x:"O país vira o celeiro de Roma. O culto de <b>Ísis</b> se espalha por todo o império, de Pompeia a Londres. Os retratos do Faium — pinturas encáusticas colocadas sobre múmias — mostram rostos impressionantemente vivos de egípcios greco‑romanos."},
+ {d:"394 d.C.",t:"O último hieróglifo",x:"Um sacerdote grava um grafito no templo de Ísis, em Filae: é a última inscrição hieroglífica datada que conhecemos. Com os templos fechados, a escrita morre — e por 1.400 anos ninguém no mundo consegue lê‑la.",f:"A língua egípcia, porém, não morreu: sobreviveu como <b>copta</b>, escrita com letras gregas, e ainda é usada na liturgia da Igreja Copta."},
+ {d:"1798 – 1801",t:"A expedição de Napoleão",x:"Junto com 35 mil soldados vieram 167 cientistas. O resultado foi a monumental <i>Description de l'Égypte</i> e a febre da egiptomania na Europa. Em 1799, um soldado encontra a Pedra de Roseta em Rashid; em 1801, os britânicos a levam para Londres, onde está até hoje."},
+ {d:"27 de setembro de 1822",t:"Champollion decifra os hieróglifos",x:"Comparando os cartuchos de Ptolomeu e Cleópatra, <b>Jean‑François Champollion</b> percebe que a escrita não é puramente simbólica: mistura sinais de som, de palavra e determinativos. Ele conhecia copta, e foi isso que fechou a conta.",f:"Segundo o irmão, Champollion irrompeu no escritório dele gritando “consegui!” e desmaiou em seguida, ficando dias de cama."},
+ {d:"4 de novembro de 1922",t:"Howard Carter abre a KV62",x:"Depois de seis temporadas sem achar nada, a equipe de Carter encontra um degrau sob os entulhos. Dentro, <b>5.398 objetos</b> e o único enxoval funerário real quase completo já encontrado. A “maldição” foi invenção da imprensa: a maioria dos presentes na abertura viveu décadas."},
+ {d:"1 de novembro de 2025",t:"O Grande Museu Egípcio",x:"Depois de mais de duas décadas de obras, abre em Gizé o maior museu do mundo dedicado a uma única civilização: cerca de 100 mil peças, incluindo <b>toda</b> a coleção de Tutancâmon reunida pela primeira vez desde 1922 e o barco solar de Quéops."}
+ ]}
+];
+
+const TEMAS = [
+{t:"Deuses, mitos e o além",h:`
+<p>Não havia “uma” religião egípcia: havia cultos locais que se somaram por três mil anos, sem que ninguém precisasse escolher entre eles.</p>
+<h4>Os principais</h4>
+<ul>
+<li><b>Rá</b> — o sol, que atravessa o céu de dia e o mundo dos mortos de noite, enfrentando a serpente Apófis.</li>
+<li><b>Osíris</b> — rei assassinado pelo irmão, ressuscitado, senhor dos mortos. Pele verde: vegetação que renasce.</li>
+<li><b>Ísis</b> — esposa de Osíris, maga suprema, que remonta o corpo do marido e concebe Hórus.</li>
+<li><b>Hórus</b> — o falcão; todo faraó vivo é Hórus na Terra.</li>
+<li><b>Set</b> — deserto, caos e tempestade. Vilão do mito, mas também quem defende o barco de Rá.</li>
+<li><b>Anúbis</b> — o chacal do embalsamamento e guia dos mortos.</li>
+<li><b>Thoth</b> — íbis, deus da escrita, do cálculo e do tempo; escriba dos deuses.</li>
+<li><b>Maat</b> — a ordem, a verdade e o equilíbrio. Representada por uma pena. Não é bem uma deusa: é o princípio que faz o mundo funcionar.</li>
+<li><b>Hathor</b> (amor e música), <b>Bastet</b> (gata protetora do lar), <b>Sekhmet</b> (leoa da guerra e das epidemias), <b>Ptah</b> (criador e artesão), <b>Amon</b> (o oculto, que vira Amon‑Rá e domina o Novo Império), <b>Sobek</b> (crocodilo), <b>Taueret</b> (hipopótamo protetora das grávidas).</li>
+</ul>
+<h4>O julgamento</h4>
+<p>No <i>Duat</i>, o coração do morto é pesado contra a pena de Maat. Se pesar mais — por causa das más ações — é devorado por <b>Ammit</b>, parte crocodilo, leão e hipopótamo, e a pessoa deixa de existir. Se equilibrar, segue para o campo de juncos. O <i>Livro dos Mortos</i> era o guia de viagem: fórmulas, senhas e a “confissão negativa” de 42 pecados não cometidos.</p>
+<h4>As partes da pessoa</h4>
+<p>O egípcio se via composto de várias partes: o <b>ka</b> (força vital, que precisa de oferendas), o <b>ba</b> (a personalidade, um pássaro com rosto humano que sai e volta ao corpo), o <b>akh</b> (o espírito transfigurado), o nome e a sombra. Por isso o corpo precisava ser preservado — e por isso apagar o nome de alguém era a pior punição possível.</p>`},
+
+{t:"Escrita: hieróglifos, hierático, demótico",h:`
+<p>Os egípcios chamavam sua escrita de <i>medu netjer</i>, “palavras do deus”. Ela funcionou por mais de 3.400 anos.</p>
+<ul>
+<li>Cerca de <b>700 sinais</b> no período clássico (mais de 5.000 na época greco‑romana).</li>
+<li>Os sinais são de três tipos: <b>fonogramas</b> (som), <b>logogramas</b> (a palavra inteira) e <b>determinativos</b> — sinais mudos, no fim da palavra, que dizem de que categoria ela é. Resolvem a ambiguidade, já que as vogais não eram escritas.</li>
+<li>Não sabemos como o egípcio soava de verdade. “Tutancâmon” e “Ramsés” são convenções modernas com vogais inventadas para facilitar a leitura.</li>
+<li>Podia ser escrita da esquerda para a direita, da direita para a esquerda ou em colunas: <b>os rostos dos sinais sempre olham para o começo da linha</b>. Basta olhar para onde o passarinho está virado.</li>
+<li>O <b>cartucho</b> — o anel oval alongado — envolve o nome do rei e simboliza o círculo que o sol percorre, ou seja, tudo o que ele governa.</li>
+</ul>
+<h4>As três formas</h4>
+<ul>
+<li><b>Hieroglífica</b>: monumental, para pedra e ritual.</li>
+<li><b>Hierática</b>: cursiva, escrita a pincel em papiro — o dia a dia dos escribas.</li>
+<li><b>Demótica</b>: cursiva ainda mais rápida, do Período Tardio em diante.</li>
+<li><b>Copta</b>: a mesma língua com alfabeto grego, já na era cristã.</li>
+</ul>
+<p>Ser escriba era o grande caminho de ascensão social: isento de trabalho braçal e de impostos. O texto escolar <i>Sátira dos Ofícios</i> descreve todas as outras profissões como miseráveis para convencer os alunos a estudar.</p>`},
+
+{t:"Mumificação e o corpo humano",h:`
+<p>O processo completo levava <b>70 dias</b> e era, ao mesmo tempo, técnica e ritual — cada gesto acompanhado de fórmulas.</p>
+<ul>
+<li>O <b>cérebro</b> era removido pelas narinas com um gancho e descartado: não lhe atribuíam função importante.</li>
+<li>O <b>coração</b> permanecia no corpo. Para os egípcios, era a sede do pensamento, da memória e do caráter — e seria pesado no julgamento. Um <b>escaravelho do coração</b> era colocado sobre ele com uma fórmula pedindo que não testemunhasse contra o dono.</li>
+<li>Pulmões, fígado, estômago e intestinos iam para os <b>vasos canópicos</b>, protegidos pelos quatro filhos de Hórus: Imseti (fígado, cabeça humana), Hapy (pulmões, babuíno), Duamutef (estômago, chacal) e Qebehsenuef (intestinos, falcão).</li>
+<li>O corpo era coberto por <b>natrão</b> — sal natural de carbonato e bicarbonato de sódio do Uádi Natrum — por 35 a 40 dias. É desidratação: sem água, bactérias e fungos não decompõem o tecido.</li>
+<li>Depois vinham resinas, óleos, enchimento com linho e serragem, e o enfaixamento com centenas de metros de tiras, com amuletos posicionados entre as camadas.</li>
+</ul>
+<h4>Não era só para reis</h4>
+<p>Milhões de <b>animais</b> foram mumificados como oferendas votivas: íbis, gatos, falcões, crocodilos, touros sagrados. Em Tuna el‑Gebel há galerias com milhões de íbis. Análises mostram que muitos eram criados especialmente para isso — e que parte dos “pacotes” vendidos aos peregrinos estava vazia ou continha só penas.</p>
+<p class="fim"><b>Em sala:</b> mumificar uma maçã ou um pedaço de fruta em uma mistura de sal e bicarbonato durante duas semanas reproduz o princípio de desidratação e é uma prática clássica para discutir conservação de alimentos e atividade microbiana.</p>`},
+
+{t:"Ciência, matemática e medicina",h:`
+<h4>Calendário e astronomia</h4>
+<p>O calendário civil egípcio tinha <b>365 dias</b>: 3 estações × 4 meses × 30 dias, mais 5 dias extras. As estações eram agrícolas — <b>Akhet</b> (cheia), <b>Peret</b> (semeadura) e <b>Shemu</b> (colheita). O ano novo era marcado pelo reaparecimento da estrela Sótis (Sírius) no horizonte antes do sol, que coincidia com a cheia. Sem ano bissexto, o calendário “girava” em relação às estações num ciclo de 1.460 anos — o que hoje ajuda os historiadores a datar reinados.</p>
+<h4>Matemática</h4>
+<ul>
+<li>Sistema decimal, com sinais próprios para 1, 10, 100, 1.000… até 1 milhão.</li>
+<li>Frações sempre <b>unitárias</b> (1/2, 1/3, 1/7…), com a única exceção de 2/3. Somar 2/5 exigia escrever 1/3 + 1/15.</li>
+<li>Cálculo de áreas, volumes de tronco de pirâmide e de silos cilíndricos.</li>
+<li>Heródoto afirma que a <b>geometria nasceu no Egito</b> da necessidade de remarcar os limites dos terrenos depois de cada cheia apagar as divisas.</li>
+</ul>
+<h4>Medicina</h4>
+<ul>
+<li><b>Papiro Edwin Smith</b> (c. 1600 a.C., cópia de original bem mais antigo): 48 casos de trauma organizados por exame, diagnóstico, prognóstico e tratamento — sem magia. Traz a mais antiga descrição conhecida do <b>cérebro</b>, das meninges e do líquido cefalorraquidiano, e observa que lesões de um lado da cabeça afetam o lado oposto do corpo.</li>
+<li><b>Papiro Ebers</b> (c. 1550 a.C.): cerca de 700 fórmulas e remédios, incluindo mel (bactericida), salgueiro (princípio próximo do ácido salicílico) e receitas mágicas lado a lado.</li>
+<li>Heródoto registrou que o Egito tinha <b>médicos especialistas</b>: um para os olhos, outro para a cabeça, outro para os dentes, outro para o abdome.</li>
+<li>Teste de gravidez: a mulher urinava em sacos de trigo e cevada; se germinassem, estava grávida. Testado em laboratório nos anos 1960, o método acertou em cerca de 70% dos casos — hormônios da gestação de fato estimulam a germinação.</li>
+<li>O <b>kohl</b> dos olhos, feito de galena (sulfeto de chumbo), reduzia o reflexo do sol e, segundo um estudo de 2010, em baixas doses estimulava a produção de óxido nítrico pelas células, ajudando contra infecções oculares.</li>
+</ul>`},
+
+{t:"Vida cotidiana às margens do Nilo",h:`
+<ul>
+<li>Cerca de <b>90% da população era camponesa</b>. O calendário de trabalho era o do rio: durante a cheia, quando não se podia plantar, muitos eram convocados para obras públicas — em regime de <i>corvée</i>, remunerado em comida e cerveja.</li>
+<li>O <b>nilômetro</b>, uma escada graduada dentro de um poço ligado ao rio, media a altura da cheia. Dela dependia a colheita — e o imposto do ano era calculado com base nessa medida.</li>
+<li><b>Pão e cerveja</b> eram a base da dieta e também funcionavam como salário. A cerveja era espessa, nutritiva e consumida por adultos e crianças.</li>
+<li>As casas eram de <b>tijolo de barro cru</b>, com terraço para dormir nas noites quentes. Templos e tumbas eram de pedra porque eram “para sempre”; casas, inclusive palácios, não precisavam ser.</li>
+<li><b>Mulheres</b> tinham, na lei, direitos raros no mundo antigo: podiam possuir e herdar bens em nome próprio, assinar contratos, testemunhar em tribunal, pedir divórcio e ficar com sua parte dos bens.</li>
+<li>O jogo de tabuleiro <b>senet</b> era jogado por todas as classes e virou metáfora da travessia para o além. Nefertari aparece jogando na parede de sua tumba.</li>
+<li>Homens e mulheres usavam maquiagem, perucas e perfume. Higiene era assunto sério: sacerdotes se depilavam por inteiro e se lavavam várias vezes ao dia.</li>
+<li><b>Gatos</b> eram protegidos por lei e frequentemente mumificados. Matar um, mesmo sem querer, podia custar caro.</li>
+</ul>`},
+
+{t:"Arte e arquitetura: as regras do jogo",h:`
+<ul>
+<li>A figura humana segue um <b>cânone de proporções</b> traçado sobre uma grade: 18 quadrados do pé à linha do cabelo no estilo clássico. Por isso as figuras parecem tão constantes ao longo de milênios — não é falta de habilidade, é norma.</li>
+<li>A famosa pose “torcida” é uma escolha deliberada: cabeça de perfil, olho de frente, ombros de frente, quadril e pernas de perfil. O objetivo não era imitar a visão, e sim mostrar cada parte do corpo em seu ângulo <b>mais reconhecível</b>.</li>
+<li>Tamanho é hierarquia: o faraó é gigante, a esposa é média, os servos são pequenos. A escala mede importância, não distância.</li>
+<li>As cenas se organizam em <b>registros</b> — faixas horizontais empilhadas, cada uma com sua linha de base.</li>
+<li><b>Karnak</b> é o maior complexo religioso já construído: cerca de 100 hectares, ampliado por mais de 30 faraós ao longo de 2.000 anos. Só a sala hipostila tem <b>134 colunas</b>, algumas com 21 m.</li>
+<li><b>Obeliscos</b> eram monólitos de granito de Assuã. O maior deles, inacabado, continua deitado na pedreira: teria 42 m e mais de 1.000 toneladas. Rachou durante o corte.</li>
+<li>O <b>azul egípcio</b> é o primeiro pigmento sintético da história, produzido por volta de 2500 a.C. aquecendo areia, calcário, cobre e natrão. Ele reemite luz no infravermelho — o que hoje permite detectar vestígios invisíveis a olho nu em peças aparentemente sem cor.</li>
+</ul>`},
+
+{t:"Sete mitos que ainda circulam",h:`
+<ul>
+<li><b>“Escravos construíram as pirâmides.”</b> Não. Eram trabalhadores egípcios, alimentados, alojados em vilas com padaria e serviço médico, e em boa parte camponeses convocados na entressafra.</li>
+<li><b>“Napoleão atirou no nariz da Esfinge.”</b> O nariz já faltava décadas antes de ele nascer.</li>
+<li><b>“A maldição de Tutancâmon.”</b> Estatísticas sobre os presentes na abertura da tumba não mostram mortalidade acima do esperado. Howard Carter viveu mais 16 anos.</li>
+<li><b>“Cleópatra era egípcia.”</b> Era de uma dinastia macedônica que reinava havia 250 anos — e foi a primeira delas a aprender a língua egípcia.</li>
+<li><b>“Os hieróglifos são desenhos simbólicos.”</b> São uma escrita completa, com sinais de som. Dá para escrever qualquer coisa neles, inclusive seu nome.</li>
+<li><b>“Foram os alienígenas.”</b> Conhecemos as pedreiras, as rampas, os diários dos capatazes, as ferramentas de cobre e dolerito, as vilas dos operários e até as marcas de equipe pintadas nos blocos. A explicação é humana e está documentada.</li>
+<li><b>“O Egito antigo foi uma coisa só.”</b> Entre Narmer e Cleópatra passaram‑se cerca de 3.000 anos. A Grande Pirâmide já era uma ruína antiquíssima e visitada por turistas quando Cleópatra nasceu.</li>
+</ul>`}
+];
+
+/* ---------- IMAGENS (uso livre, com crédito) ---------- */
+const IMG={
+  "Os primeiros agricultores do vale":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Thebes%2C_Luxor%2C_Egypt%2C_Theban_plains.jpg/1280px-Thebes%2C_Luxor%2C_Egypt%2C_Theban_plains.jpg",c:"O vale fértil do Nilo visto da montanha tebana",a:"Vyacheslav Argenberg",l:"CC BY 4.0",p:"https://commons.wikimedia.org/wiki/File:Thebes%2C_Luxor%2C_Egypt%2C_Theban_plains.jpg"},
+  "Culturas de Nagada":{u:"https://upload.wikimedia.org/wikipedia/commons/f/f9/Day_2_-_Predynastic_Pottery_%288148717690%29.jpg",c:"Cerâmica predinástica",a:"akhenatenator",l:"CC0",p:"https://commons.wikimedia.org/wiki/File:Day_2_-_Predynastic_Pottery_%288148717690%29.jpg"},
+  "A Paleta de Narmer":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Narmer_Palette_smiting_side.jpg/1280px-Narmer_Palette_smiting_side.jpg",c:"Paleta de Narmer, lado do rei golpeando o inimigo",a:"Unknown authorUnknown author",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Narmer_Palette_smiting_side.jpg"},
+  "A pirâmide de degraus de Saqqara":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Saqqara%2C_Pyramid_of_Djoser%2C_Ancient_Egypt.jpg/1280px-Saqqara%2C_Pyramid_of_Djoser%2C_Ancient_Egypt.jpg",c:"A pirâmide de degraus de Djoser, em Saqqara",a:"Vyacheslav Argenberg",l:"CC BY 4.0",p:"https://commons.wikimedia.org/wiki/File:Pir%C3%A2mide_de_degraus_de_Djoser"},
+  "Seneferu, o rei que construiu três pirâmides":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/11-degree_angle_change_of_the_Bent_Pyramid_at_Dahshur.jpg/1280px-11-degree_angle_change_of_the_Bent_Pyramid_at_Dahshur.jpg",c:"A Pirâmide Curvada de Dahshur, com a mudança de ângulo",a:"Darer101",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:11-degree_angle_change_of_the_Bent_Pyramid_at_Dahshur.jpg"},
+  "A Grande Pirâmide de Gizé":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Great_Pyramid_of_Giza.jpg/1280px-Great_Pyramid_of_Giza.jpg",c:"A Grande Pirâmide de Quéops",a:"kallerna",l:"CC BY-SA 3.0",p:"https://commons.wikimedia.org/wiki/File:Grande_Pir%C3%A2mide_de_Giz%C3%A9"},
+  "Quéfren e a Esfinge":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Great_Sphinx_of_Giza_and_Pyramid_of_Cheops.jpg/1280px-Great_Sphinx_of_Giza_and_Pyramid_of_Cheops.jpg",c:"A Grande Esfinge, com a pirâmide de Quéops ao fundo",a:"kallerna",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:A_Esfinge_e_a_pir%C3%A2mide_de_Qu%C3%A9ops"},
+  "Os Textos das Pirâmides":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Pyramid_Texts_in_Unas%E2%80%99_Pyramid_2017.jpg/1280px-Pyramid_Texts_in_Unas%E2%80%99_Pyramid_2017.jpg",c:"Textos das Pirâmides na tumba de Unas",a:"Aidan McRae Thomson",l:"CC BY-SA 2.0",p:"https://commons.wikimedia.org/wiki/File:Pyramid_Texts_in_Unas%E2%80%99_Pyramid_2017.jpg"},
+  "O além se democratiza":{u:"https://upload.wikimedia.org/wikipedia/commons/0/0b/Inner_facing_of_the_coffin_of_Iqer%2C_wood_-_Museo_Egizio%2C_Turin_S_15744_01_p01.jpg",c:"Interior do sarcófago de Iqer, com Textos dos Sarcófagos",a:"?",l:"CC0",p:"https://commons.wikimedia.org/wiki/File:Inner_facing_of_the_coffin_of_Iqer%2C_wood_-_Museo_Egizio%2C_Turin_S_15744_01_p01.jpg"},
+  "Mentuhotep II reunifica o Egito":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Statue_of_Nebhepetre_Mentuhotep_II_in_the_Jubilee_Garment_MET_DP302395.jpg/1280px-Statue_of_Nebhepetre_Mentuhotep_II_in_the_Jubilee_Garment_MET_DP302395.jpg",c:"Estátua de Mentuhotep II com o manto do jubileu",a:"?",l:"CC0",p:"https://commons.wikimedia.org/wiki/File:Statue_of_Nebhepetre_Mentuhotep_II_in_the_Jubilee_Garment_MET_DP302395.jpg"},
+  "Senusret III quebra os nomarcas":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Head_of_Sesostris_III-E_25370-IMG_9961-black.jpg/1280px-Head_of_Sesostris_III-E_25370-IMG_9961-black.jpg",c:"Cabeça de Senusret III",a:"Rama",l:"CC BY-SA 3.0 fr",p:"https://commons.wikimedia.org/wiki/File:Head_of_Sesostris_III-E_25370-IMG_9961-black.jpg"},
+  "Amenemhat III e o Faium":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Amenemhat_III-N_464-IMG_9947-black.jpg/1280px-Amenemhat_III-N_464-IMG_9947-black.jpg",c:"Estátua de Amenemhat III",a:"Rama",l:"CC BY-SA 3.0 fr",p:"https://commons.wikimedia.org/wiki/File:Amenemhat_III-N_464-IMG_9947-black.jpg"},
+  "O Papiro Rhind":{u:"https://upload.wikimedia.org/wikipedia/commons/d/d9/Rhind_Mathematical_Papyrus.jpg",c:"O Papiro Matemático Rhind",a:"unknown (c. 2000 B.C)",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Rhind_Mathematical_Papyrus.jpg"},
+  "O alfabeto nasce nas minas do Sinai":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Serabit_sphinx_%28EA41748%29.png/1280px-Serabit_sphinx_%28EA41748%29.png",c:"Esfinge de Serabit el-Khadim, com escrita protossinaítica",a:"Onceinawhile",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Serabit_sphinx_%28EA41748%29.png"},
+  "Seqenenre Tao morre em combate":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Sequenre_tao.JPG/1280px-Sequenre_tao.JPG",c:"Crânio da múmia de Seqenenre Tao, com os ferimentos",a:"G. Elliot Smith",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Sequenre_tao.JPG"},
+  "Nasce o Vale dos Reis":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Thebes%2C_Luxor%2C_Egypt%2C_Panoramic_view_of_the_Valley_of_the_Kings.jpg/1280px-Thebes%2C_Luxor%2C_Egypt%2C_Panoramic_view_of_the_Valley_of_the_Kings.jpg",c:"Vista panorâmica do Vale dos Reis",a:"Vyacheslav Argenberg",l:"CC BY 4.0",p:"https://commons.wikimedia.org/wiki/File:Thebes%2C_Luxor%2C_Egypt%2C_Panoramic_view_of_the_Valley_of_the_Kings.jpg"},
+  "Hatshepsut, a mulher que virou faraó":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Temple_of_Hatshepsut%2C_Deir_el-Bahari%2C_Luxor%2C_Egypt.jpg/1280px-Temple_of_Hatshepsut%2C_Deir_el-Bahari%2C_Luxor%2C_Egypt.jpg",c:"Templo de Hatshepsut em Deir el-Bahari",a:"Vyacheslav Argenberg",l:"CC BY 4.0",p:"https://commons.wikimedia.org/wiki/File:Temple_of_Hatshepsut%2C_Deir_el-Bahari%2C_Luxor%2C_Egypt.jpg"},
+  "Tutmés III leva o Egito ao auge":{u:"https://upload.wikimedia.org/wikipedia/commons/7/73/Statue_of_Thutmose_III_in_the_Open_Air_Museum_in_Karnak.jpg",c:"Estátua de Tutmés III, em Karnak",a:"Marsupium",l:"CC BY 4.0",p:"https://commons.wikimedia.org/wiki/File:Statue_of_Thutmose_III_in_the_Open_Air_Museum_in_Karnak.jpg"},
+  "Amenhotep III, o apogeu":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Colossi_of_Memnon_R01.jpg/1280px-Colossi_of_Memnon_R01.jpg",c:"Os Colossos de Mêmnon",a:"Marc Ryckaert (MJJR)",l:"CC BY 3.0",p:"https://commons.wikimedia.org/wiki/File:Colossi_of_Memnon_R01.jpg"},
+  "Akhenaton, Nefertiti e a revolução de Aton":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Nofretete_Neues_Museum.jpg/1280px-Nofretete_Neues_Museum.jpg",c:"O busto de Nefertiti",a:"Philip Pikart",l:"CC BY-SA 3.0",p:"https://commons.wikimedia.org/wiki/File:Nofretete_Neues_Museum.jpg"},
+  "Tutancâmon":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Golden_mask_of_Tutankhamun.jpg/1280px-Golden_mask_of_Tutankhamun.jpg",c:"A máscara funerária de Tutancâmon",a:"Thomas Clouet",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Golden_mask_of_Tutankhamun.jpg"},
+  "Ramsés II, o Grande":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Templo_de_Rams%C3%A9s_II%2C_Abu_Simbel%2C_Egipto%2C_2022-04-02%2C_DD_26-28_HDR.jpg/1280px-Templo_de_Rams%C3%A9s_II%2C_Abu_Simbel%2C_Egipto%2C_2022-04-02%2C_DD_26-28_HDR.jpg",c:"Os colossos de Ramsés II em Abu Simbel",a:"Diego Delso",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Templo_de_Rams%C3%A9s_II%2C_Abu_Simbel%2C_Egipto%2C_2022-04-02%2C_DD_26-28_HDR.jpg"},
+  "Kadesh e o primeiro tratado de paz do mundo":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Kadesh_Treaty%2C_written_in_Akkadian._1269_BCE._From_Bo%C4%9Fazk%C3%B6y%2C_Turkey._Clay_tablet._Museum_of_the_Ancient_Orient%2C_Istanbul%2C_Turkey.jpg/1280px-Kadesh_Treaty%2C_written_in_Akkadian._1269_BCE._From_Bo%C4%9Fazk%C3%B6y%2C_Turkey._Clay_tablet._Museum_of_the_Ancient_Orient%2C_Istanbul%2C_Turkey.jpg",c:"Tábula do tratado de Kadesh, em acádio",a:"Osama Shukir Muhammed Amin FRCP(Glasg)",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Kadesh_Treaty%2C_written_in_Akkadian._1269_BCE._From_Bo%C4%9Fazk%C3%B6y%2C_Turkey._Clay_tablet._Museum_of_the_Ancient_Orient%2C_Istanbul%2C_Turkey.jpg"},
+  "Abu Simbel":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Templo_de_Nefertari%2C_Abu_Simbel%2C_Egipto%2C_2022-04-02%2C_DD_153.jpg/1280px-Templo_de_Nefertari%2C_Abu_Simbel%2C_Egipto%2C_2022-04-02%2C_DD_153.jpg",c:"O templo menor de Abu Simbel, dedicado a Nefertari",a:"Diego Delso",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Templo_de_Nefertari%2C_Abu_Simbel%2C_Egipto%2C_2022-04-02%2C_DD_153.jpg"},
+  "A Estela de Merneptah":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Merneptah_Steli_%28cropped%29.jpg/1280px-Merneptah_Steli_%28cropped%29.jpg",c:"A Estela de Merneptah",a:"𐰇𐱅𐰚𐰤",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Merneptah_Steli_%28cropped%29.jpg"},
+  "Ramsés III e os Povos do Mar":{u:"https://upload.wikimedia.org/wikipedia/commons/7/7a/02010_Sea_People%2C_Medinet_Habu_Ramses_III._Tempel_Nordostwand_cropped.jpg",c:"Povos do Mar em relevo de Medinet Habu",a:"Oltau",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:02010_Sea_People%2C_Medinet_Habu_Ramses_III._Tempel_Nordostwand_cropped.jpg"},
+  "Deir el‑Medina, a vila dos operários":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Drawing_on_ostracon_fragment_-_Deir_el-Medina_02.jpg/1280px-Drawing_on_ostracon_fragment_-_Deir_el-Medina_02.jpg",c:"Ostracon com desenho, de Deir el-Medina",a:"Hanay",l:"CC BY-SA 3.0",p:"https://commons.wikimedia.org/wiki/File:Drawing_on_ostracon_fragment_-_Deir_el-Medina_02.jpg"},
+  "Os faraós kushitas":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Head_of_a_statue_of_the_king_Taharqa_-_25th_Dynasty_-_Nubian_Museum.jpg/1280px-Head_of_a_statue_of_the_king_Taharqa_-_25th_Dynasty_-_Nubian_Museum.jpg",c:"Cabeça de estátua do rei Taharqa",a:"Marsupium",l:"CC BY 4.0",p:"https://commons.wikimedia.org/wiki/File:Head_of_a_statue_of_the_king_Taharqa_-_25th_Dynasty_-_Nubian_Museum.jpg"},
+  "Nectanebo I e II, os últimos faraós egípcios":{u:"https://upload.wikimedia.org/wikipedia/commons/8/82/Saqqara%2C_Sarcophagus_of_Nectanebo_II_%28never_used%29%2C_British_Museum.jpg",c:"O sarcófago nunca usado de Nectanebo II",a:"Jona Lendering",l:"CC0",p:"https://commons.wikimedia.org/wiki/File:Saqqara%2C_Sarcophagus_of_Nectanebo_II_%28never_used%29%2C_British_Museum.jpg"},
+  "A Pedra de Roseta":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Rosetta_Stone.JPG/1280px-Rosetta_Stone.JPG",c:"A Pedra de Roseta",a:"Hans Hillewaert",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Rosetta_Stone.JPG"},
+  "Cleópatra VII, a última faraó":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Dendera._Hathortempel_Exterieur_Reli%C3%ABf_op_de_zuidelijke_fa%C3%A7ade_met_centraal_offersc%C3%A8ne_van_Caesarion_en_Cleopatra_VII_Philopator_aan_de_enneade_van_Dendera%2C_GDE001186.jpg/1280px-thumbnail.jpg",c:"Cleópatra VII e Cesarião em relevo no templo de Dendera",a:"Unknown",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Dendera._Hathortempel_Exterieur_Reli%C3%ABf_op_de_zuidelijke_fa%C3%A7ade_met_centraal_offersc%C3%A8ne_van_Caesarion_en_Cleopatra_VII_Philopator_aan_de_enneade_van_Dendera%2C_GDE001186.jpg"},
+  "Egito romano":{u:"https://upload.wikimedia.org/wikipedia/commons/7/7f/Fayum_mummy_portrait_%28c._100-120_AD%29_-_British_museum%2C_EA29772.jpg",c:"Retrato de múmia do Faium",a:"AnonymousUnknown author",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Fayum_mummy_portrait_%28c._100-120_AD%29_-_British_museum%2C_EA29772.jpg"},
+  "O último hieróglifo":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Philae_Temple_R03.jpg/1280px-Philae_Temple_R03.jpg",c:"O templo de Ísis, em Filae",a:"Marc Ryckaert",l:"CC BY 3.0",p:"https://commons.wikimedia.org/wiki/File:Philae_Temple_R03.jpg"},
+  "A expedição de Napoleão":{u:"https://upload.wikimedia.org/wikipedia/commons/b/bf/Description_de_l%C2%B4Egypte_3.jpg",c:"Prancha da Description de l'Égypte",a:"AnonymousUnknown author",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Description_de_l%C2%B4Egypte_3.jpg"},
+  "Champollion decifra os hieróglifos":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Jean-Fran%C3%A7ois_Champollion%2C_by_L%C3%A9on_Cogniet.jpg/1280px-Jean-Fran%C3%A7ois_Champollion%2C_by_L%C3%A9on_Cogniet.jpg",c:"Champollion retratado por Léon Cogniet",a:"Léon Cogniet",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Jean-Fran%C3%A7ois_Champollion%2C_by_L%C3%A9on_Cogniet.jpg"},
+  "Howard Carter abre a KV62":{u:"https://upload.wikimedia.org/wikipedia/commons/8/86/Burton_Tutankhamun_tomb_photographs_1_025.jpg",c:"Fotografia de Harry Burton na tumba de Tutancâmon",a:"Harry Burton (1879-1940)",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Burton_Tutankhamun_tomb_photographs_1_025.jpg"},
+  "O Grande Museu Egípcio":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Grand_Egyptian_Museum_2025.jpg/1280px-Grand_Egyptian_Museum_2025.jpg",c:"O Grande Museu Egípcio, em Gizé",a:"Amr F.Nagy",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Grand_Egyptian_Museum_2025.jpg"},
+  "TEMA:Deuses, mitos e o além":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Book_of_the_Dead_of_Hunefer_sheet_6.jpg/1280px-Book_of_the_Dead_of_Hunefer_sheet_6.jpg",c:"Livro dos Mortos de Hunefer",a:"Hunefer",l:"Public domain",p:"https://commons.wikimedia.org/wiki/File:Book_of_the_Dead_of_Hunefer_sheet_6.jpg"},
+  "TEMA:Escrita: hieróglifos, hierático, demótico":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Karnak_temple_wall_hieroglyphic_script.jpg/1280px-Karnak_temple_wall_hieroglyphic_script.jpg",c:"Hieróglifos na parede do templo de Karnak",a:"Mmelouk",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Karnak_temple_wall_hieroglyphic_script.jpg"},
+  "TEMA:Mumificação e o corpo humano":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Canopic_jars_KV55.jpg/1280px-Canopic_jars_KV55.jpg",c:"Vasos canópicos",a:"Merytat3n",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Canopic_jars_KV55.jpg"},
+  "TEMA:Ciência, matemática e medicina":{u:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Nilometer%2C_Cairo%2C_Egypt.jpg",c:"Nilômetro do Cairo",a:"Michal Huniewicz",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Nilometer%2C_Cairo%2C_Egypt.jpg"},
+  "TEMA:Vida cotidiana às margens do Nilo":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Nefertari_juega_al_Senet%2C_tumba_de_Nefertari.jpg/1280px-Nefertari_juega_al_Senet%2C_tumba_de_Nefertari.jpg",c:"Nefertari jogando senet, em sua tumba",a:"Jl FilpoC",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Nefertari_juega_al_Senet%2C_tumba_de_Nefertari.jpg"},
+  "TEMA:Arte e arquitetura: as regras do jogo":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Templo_de_Karnak%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_146.jpg/1280px-Templo_de_Karnak%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_146.jpg",c:"Sala hipostila de Karnak",a:"Diego Delso",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Templo_de_Karnak%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_146.jpg"},
+  "TEMA:Sete mitos que ainda circulam":{u:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Standing_Hippopotamus_MET_DP247657.jpg/1280px-Standing_Hippopotamus_MET_DP247657.jpg",c:"Hipopótamo de faiança azul egípcia",a:"?",l:"CC0",p:"https://commons.wikimedia.org/wiki/File:Standing_Hippopotamus_MET_DP247657.jpg"}
+};
+
+function foto(chave){
+  const i=IMG[chave]; if(!i) return '';
+  return `<figure class="foto"><img src="${i.u}" alt="${i.c}" loading="lazy" decoding="async">`+
+         `<figcaption><b>${i.c}</b>${i.a} · ${i.l} · <a href="${i.p}" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption></figure>`;
+}
+
+/* ---------- RENDERIZAÇÃO ---------- */
+const linha = document.getElementById('linha');
+const chips = document.getElementById('chips');
+const grid  = document.getElementById('grid');
+
+ERAS.forEach((era,i)=>{
+  const sec = document.createElement('section');
+  sec.className = 'era';
+  sec.id = 'e-'+era.id;
+  sec.style.setProperty('--c', era.c);
+  sec.dataset.era = era.id;
+
+  let html = `<div class="era-head rv">
+      <span class="era-num">${String(i+1).padStart(2,'0')}</span>
+      <h2>${era.n}</h2>
+      <span class="era-range">${era.r}</span>
+      <p class="era-blurb">${era.b}</p>
+    </div><div class="events">`;
+
+  era.e.forEach(ev=>{
+    html += `<article class="event${ev.k?' rei':''}">
+      <span class="dot" aria-hidden="true"></span>
+      <div class="card rv">
+        <p class="date">${ev.d}</p>
+        ${ev.k?`<span class="cartucho">${ev.k}</span>`:''}
+        <h3>${ev.t}</h3>
+        ${foto(ev.t)}
+        <p class="txt">${ev.x}</p>
+        ${ev.f?`<p class="fato"><b>Curiosidade</b>${ev.f}</p>`:''}
+      </div>
+    </article>`;
+  });
+  html += '</div>';
+  sec.innerHTML = html;
+  linha.appendChild(sec);
+
+  const b = document.createElement('button');
+  b.className='chip'; b.type='button'; b.textContent=era.n;
+  b.style.setProperty('--c',era.c);
+  b.dataset.target='e-'+era.id;
+  b.addEventListener('click',()=>document.getElementById('e-'+era.id).scrollIntoView({block:'start'}));
+  chips.appendChild(b);
+});
+
+TEMAS.forEach(t=>{
+  const d = document.createElement('details');
+  d.className='tema';
+  d.innerHTML = `<summary><span class="mk" aria-hidden="true"></span>${t.t}</summary><div class="tema-body">${foto("TEMA:"+t.t)}${t.h}</div>`;
+  grid.appendChild(d);
+});
+
+/* ---------- REVELAÇÃO NO SCROLL ---------- */
+const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const alvos = document.querySelectorAll('.rv');
+if(reduz){
+  alvos.forEach(el=>el.classList.add('in'));
+}else{
+  const io = new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -12% 0px',threshold:.12});
+  alvos.forEach(el=>io.observe(el));
+  // abertura entra sozinha
+  requestAnimationFrame(()=>document.querySelectorAll('.hero .rv').forEach(el=>el.classList.add('in')));
+}
+
+/* ---------- PREENCHIMENTO DO EIXO + ERA ATIVA ---------- */
+const tl = document.getElementById('timeline');
+const fill = document.getElementById('fill');
+const secs = [...document.querySelectorAll('.era')];
+let tick = false;
+
+function atualiza(){
+  const r = tl.getBoundingClientRect();
+  const vis = Math.min(Math.max(window.innerHeight*0.55 - r.top, 0), r.height);
+  fill.style.setProperty('--fill', (vis / r.height * 100).toFixed(2) + '%');
+
+  let ativa = null;
+  for(const s of secs){
+    const b = s.getBoundingClientRect();
+    if(b.top <= window.innerHeight*0.42) ativa = s.dataset.era;
+  }
+  [...chips.children].forEach(c=>{
+    const on = c.dataset.target === 'e-'+ativa;
+    c.setAttribute('aria-current', on ? 'true':'false');
+    if(on && c.offsetLeft < chips.scrollLeft || on && c.offsetLeft > chips.scrollLeft + chips.clientWidth - c.offsetWidth){
+      chips.scrollTo({left:c.offsetLeft-16,behavior:reduz?'auto':'smooth'});
+    }
+  });
+  tick = false;
+}
+addEventListener('scroll',()=>{ if(!tick){ tick=true; requestAnimationFrame(atualiza);} },{passive:true});
+addEventListener('resize',atualiza);
+atualiza();
+
+/* ---------- BUSCA ---------- */
+const q = document.getElementById('q');
+const vazio = document.getElementById('vazio');
+q.addEventListener('input',()=>{
+  const termo = q.value.trim().toLowerCase();
+  let achou = 0;
+  secs.forEach(sec=>{
+    let n = 0;
+    sec.querySelectorAll('.event').forEach(ev=>{
+      const ok = !termo || ev.textContent.toLowerCase().includes(termo);
+      ev.style.display = ok ? '' : 'none';
+      if(ok){ n++; ev.querySelectorAll('.rv').forEach(el=>el.classList.add('in')); }
+    });
+    const mostrar = !termo ? true : n>0;
+    sec.style.display = mostrar ? '' : 'none';
+    if(mostrar && termo) sec.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));
+    achou += n;
+  });
+  vazio.classList.toggle('on', termo && achou===0);
+  atualiza();
+});
+</script>
+</body>
+</html>
